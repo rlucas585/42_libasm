@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/19 15:56:05 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/20 13:37:19 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/24 17:38:09 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,10 @@
 ; instruction, which means 'jump to this location if the carry flag is set'.
 ; Thus, if there is an error while executing write, we move to the label 'err',
 ; where the return value for the function is set to '-1' (-0x01 in hex).
+
+; rdi = fd
+; rsi = buf
+; rcx = n
 
 			global		_ft_write
 

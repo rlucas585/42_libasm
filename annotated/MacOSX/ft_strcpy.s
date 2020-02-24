@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 17:05:34 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/20 17:49:38 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/24 11:47:12 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,8 +28,16 @@
 
 _ft_strcpy	push		rbp
 			mov			rbp, rsp
-			mov			rdx, rdi		; Saving initial pointer value for
-										; return at end of function
+			; mov			rdx, rdi	; Using a register to store initial
+										; pointer, not as responsible as using
+										; the stack (as below).
+
+			sub			rsp, 16			; Allocating 8 bytes on the stack
+			mov			[rsp], rdi		; Moving initial pointer value into
+										; the stack. MORE RELIABLE THAN
+										; USING A REGISTER, AS ANOTHER FUNCTION
+										; MAY BE USING THE REGISTER.
+
 loop:		cmp			[rsi], byte 0	; compare the value rsi points to with 0
 										; to check for the null terminator
 			je			end				; if equal, jump to end
@@ -38,13 +46,10 @@ loop:		cmp			[rsi], byte 0	; compare the value rsi points to with 0
 			inc			rsi				; increment both pointers
 			inc			rdi
 			jmp			loop			; Repeat the loop again
-end:		mov			rax, rdx		; Set return value as initial pointer
+
+end:		mov			rax, [rsp]		; Set return value as initial pointer
 										; to dst
+			add			rsp, 16
 			mov			rsp, rbp
 			pop			rbp
 			ret
-
-; Notes for strdup
-;push		al
-;	Call to strdup
-;pop			al

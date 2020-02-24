@@ -6,13 +6,14 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/20 09:50:55 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/24 09:16:32 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/02/24 17:40:11 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <libasm.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int			write_tests(void)
 {
@@ -208,6 +209,58 @@ int			strdup_tests(void)
 	return (0);
 }
 
+int			single_atoi(char *str2)
+{
+	char		str[40];
+
+	ft_strcpy(str, str2);
+	printf("atoi: %d\nft_atoi: %d\n\n", atoi(str), ft_atoi(str));
+	if (atoi(str) != ft_atoi(str))
+		return (-1);
+	return (0);
+}
+
+int			atoi_tests(void)
+{
+	printf("Atoi tests\n-----------------------------\n\n");
+	if (single_atoi("516"))
+		return (-1);
+	if (single_atoi("     x124897"))
+		return (-1);
+	if (single_atoi("-284987989"))
+		return (-1);
+	if (single_atoi("-284987989999999"))
+		return (-1);
+	if (single_atoi("284987989x999999999"))
+		return (-1);
+	if (single_atoi("2849879899999999999999999999"))
+		return (-1);
+	if (single_atoi("-2849879899999999999999999999"))
+		return (-1);
+	if (single_atoi("123-248927"))
+		return (-1);
+	if (single_atoi(" + "))
+		return (-1);
+	if (single_atoi(" - "))
+		return (-1);
+	if (single_atoi(" -284987989"))
+		return (-1);
+	if (single_atoi("			-24897234tabtest"))
+		return (-1);
+	if (single_atoi("123-"))
+		return (-1);
+	return (0);
+}
+
+int			atoi_base_tests(void)
+{
+	printf("expected: 15, got: %d\n", ft_atoi_base("15", "3"));
+	printf("expected: 0, got: %d\n", ft_atoi_base("", "3"));
+	printf("expected: 0, got: %d\n", ft_atoi_base("1872", ""));
+	printf("expected: 15, got: %d\n", ft_atoi_base("1872", " "));
+	return (0);
+}
+
 int			main(void)
 {
 	/* if (write_tests() < 0) */
@@ -235,10 +288,20 @@ int			main(void)
 	/* 	printf("strcpy test failure\n"); */
 	/* 	return (-1); */
 	/* } */
-	if(strdup_tests() < 0)
+	/* if (strdup_tests() < 0) */
+	/* { */
+	/* 	printf("strdup test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	if (atoi_tests() < 0)
 	{
-		printf("strdup test failure\n");
+		printf("atoi test failure\n");
 		return (-1);
 	}
+	/* if (atoi_base_tests() < 0) */
+	/* { */
+	/* 	printf("ft_atoi_base test failure\n"); */
+	/* 	return (-1); */
+	/* } */
 	return (0);
 }

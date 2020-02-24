@@ -6,7 +6,7 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/19 15:53:38 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/22 12:47:40 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/02/24 13:24:14 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ size_t		ft_strlen(const char *s);
 char		*ft_strcpy(char *dst, const char *src);
 int			ft_strcmp(const char *s1, const char *s2);
 char		*ft_strdup(const char *s);
+int			ft_atoi(const char *str);
+int			ft_atoi_base(char *str, char *base);
 
 #endif
