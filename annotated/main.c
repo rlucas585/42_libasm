@@ -6,33 +6,13 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/20 09:50:55 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/20 17:49:55 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/02/24 09:16:32 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libasm.h"
+#include <libasm.h>
 #include <stdio.h>
 #include <string.h>
-
-char		*ft_strdup(char *str)
-{
-	int		i;
-	char	*out;
-
-	i = 0;
-	while (str[i])
-		i++;
-	out = (char *)malloc(sizeof(char) * i);
-	if (!out)
-		return (NULL);
-	i = 0;
-	while (str[i])
-	{
-		out[i] = str[i];
-		i++;
-	}
-	return (out);
-}
 
 int			write_tests(void)
 {
@@ -41,7 +21,7 @@ int			write_tests(void)
 	int		n_ret;
 	int		fd;
 
-	str = ft_strdup("Hello!\n");
+	str = strdup("Hello!\n");
 	if (!str)
 		return (-1);
 
@@ -124,9 +104,9 @@ int			strlen_tests(void)
 {
 	char		*str;
 
-	/* str = ft_strdup("You Belong With Me\n"); */
-	/* str = ft_strdup("You Belong\n"); */
-	str = ft_strdup("ajdfklaewhkjhaefljaeklfjklaejfklaejfkljakfjekljfe"
+	/* str = strdup("You Belong With Me\n"); */
+	/* str = strdup("You Belong\n"); */
+	str = strdup("ajdfklaewhkjhaefljaeklfjklaejfklaejfkljakfjekljfe"
 			"ajsgflrnglrsmflkjaeklfjmaeklsfjklaesjfklejsfjesfkljsljf"
 			"lsejfklaejfkljfgkljseklfjeklsjfkljsefkjeklfj"
 			"kldsjfklejfkljeklfjeklsjfklesjfklejsfkjeklfjs"
@@ -144,7 +124,7 @@ int			strlen_tests(void)
 		return (-1);
 	}
 	free(str);
-	str = ft_strdup("");
+	str = strdup("");
 	printf("ft_strlen result = %ld\n", ft_strlen(str));
 	printf("strlen result = %ld\n", strlen(str));
 	if (strlen(str) != ft_strlen(str))
@@ -153,7 +133,7 @@ int			strlen_tests(void)
 		return (-1);
 	}
 	free(str);
-	str = ft_strdup("3289qhdwh4fhqwh383hqf784q84fh34q8q7hg83wwhgierwhgiuwhiuo");
+	str = strdup("3289qhdwh4fhqwh383hqf784q84fh34q8q7hg83wwhgierwhgiuwhiuo");
 	printf("ft_strlen result = %ld\n", ft_strlen(str));
 	printf("strlen result = %ld\n", strlen(str));
 	if (strlen(str) != ft_strlen(str))
@@ -182,6 +162,52 @@ int			strcpy_tests(void)
 	return (0);
 }
 
+int			strcmp_tests(void)
+{
+	char		*s1 = NULL;
+	char		*s2 = NULL;
+
+	s1 = strdup("String2");
+	if (!s1)
+		return (-1);
+	s2 = strdup("String2");
+	if (!s2)
+		return (-1);
+	printf("strcmp result = %d\n", strcmp(s1, s2));
+	printf("ft_strcmp result = %d\n", ft_strcmp(s1, s2));
+	if (strcmp(s1, s2) != ft_strcmp(s1, s2))
+	{
+		free(s1);
+		free(s2);
+		return (-1);
+	}
+	free(s1);
+	free(s2);
+	return (0);
+}
+
+int			strdup_tests(void)
+{
+	char	*s1 = NULL;
+	char	*s2 = NULL;
+
+	s1 = strdup("Test string!");
+	s2 = ft_strdup("Test string!");
+	if (!s2)
+		printf("s2 not allocated\n");
+	printf("strdup string: \"%s\"\n"
+			"ft_strdup string: \"%s\"\n", s1, s2);
+	if (strcmp(s1, s2) != 0)
+	{
+		free(s1);
+		free(s2);
+		return (-1);
+	}
+	free(s1);
+	free(s2);
+	return (0);
+}
+
 int			main(void)
 {
 	/* if (write_tests() < 0) */
@@ -196,12 +222,22 @@ int			main(void)
 	/* } */
 	/* if (strlen_tests() < 0) */
 	/* { */
-		/* printf("strlen test failure\n"); */
-		/* return (-1); */
+	/* 	printf("strlen test failure\n"); */
+	/* 	return (-1); */
 	/* } */
-	if(strcpy_tests() < 0)
+	/* if(strcpy_tests() < 0) */
+	/* { */
+	/* 	printf("strcpy test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	/* if(strcmp_tests() < 0) */
+	/* { */
+	/* 	printf("strcpy test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	if(strdup_tests() < 0)
 	{
-		printf("strcpy test failure\n");
+		printf("strdup test failure\n");
 		return (-1);
 	}
 	return (0);

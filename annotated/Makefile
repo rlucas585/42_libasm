@@ -6,33 +6,62 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 10:00:23 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/20 17:18:58 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/24 09:27:25 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-ASM = ft_write.s \
-	  ft_read.s \
-	  ft_strlen.s \
-	  ft_strcpy.s
+#-------------------------Find Operating System---------------------------------
 
+OS := $(shell uname)
+ifeq ($(OS),Linux)
+	DIR = Linux/
+else
+	DIR = MacOSX/
+endif
+
+#-----------------------------Select sources------------------------------------
+
+ASM = $(DIR)ft_write.s \
+	  $(DIR)ft_read.s \
+	  $(DIR)ft_strlen.s \
+	  $(DIR)ft_strcpy.s \
+	  $(DIR)ft_strcmp.s \
+	  $(DIR)ft_strdup.s
 SRC = main.c
 
-ASMOBJ = $(ASM:.s=.o)
+#----------------------------Select Objects-------------------------------------
 
-OBJ = $(SRC:.c=.o) 
+ODIR = obj/
+ASMOBJ = $(patsubst $(DIR)%.s,$(ODIR)%.o,$(ASM))
+OBJ = $(ODIR)$(SRC:.c=.o) 
+
+#------------------------Library and Flags definitions--------------------------
 
 LIBRARY = libasm.h
-
 FLAGS = -Wall -Wextra -Werror
+
+#--------------------------Compile test executable------------------------------
 
 all: $(OBJ) $(ASMOBJ)
 	@gcc $(FLAGS) -I. -o testexec $(OBJ) $(ASMOBJ)
 
+#-------------Create and fill objects directory with main.c source--------------
+
 $(OBJ): $(SRC) $(LIBRARY)
-	@gcc -c $(FLAGS) -I. $<
+	@mkdir -p $(ODIR)
+	@gcc -c -o $@ $(FLAGS) -I. $<
+
+#-------------Create and fill objects directory with assembly sources-----------
 
 $(ASMOBJ): $(ASM)
-	@nasm -fmacho64 -o $@ $(patsubst %.o,%.s,$@)
+	@mkdir -p $(ODIR)
+ifeq ($(OS),MacOSX)
+	@nasm -fmacho64 -o $@ $(patsubst $(ODIR)%.o,$(DIR)%.s,$@)
+else
+	@nasm -felf64 -o $@ $(patsubst $(ODIR)%.o,$(DIR)%.s,$@)
+endif
+
+#------------------------Utility Make Instructions------------------------------
 
 clean:
 	@rm -f $(OBJ) $(ASMOBJ)
@@ -41,5 +70,7 @@ fclean: clean
 	@rm -f testexec
 
 re: fclean all
+
+#-----------------------------Phony instructions--------------------------------
 
 .PHONY: clean fclean all re
