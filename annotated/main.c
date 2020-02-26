@@ -6,14 +6,14 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/20 09:50:55 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/24 17:40:11 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/02/26 16:21:52 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <libasm.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <libasm.h>
 
 int			write_tests(void)
 {
@@ -184,6 +184,20 @@ int			strcmp_tests(void)
 	}
 	free(s1);
 	free(s2);
+	s1 = strdup("");
+	if (!s1)
+		return (-1);
+	s2 = strdup("String2");
+	if (!s2)
+		return (-1);
+	printf("strcmp result = %d\n", strcmp(s1, s2));
+	printf("ft_strcmp result = %d\n", ft_strcmp(s1, s2));
+	if (strcmp(s1, s2) != ft_strcmp(s1, s2))
+	{
+		free(s1);
+		free(s2);
+		return (-1);
+	}
 	return (0);
 }
 
@@ -252,12 +266,69 @@ int			atoi_tests(void)
 	return (0);
 }
 
+int			strchr_tests(void)
+{
+	char		str[] = "hi there";
+
+	printf("return = %s\n", ft_strchr(str, 'i'));
+	printf("return = %s\n", ft_strchr(str, 'x'));
+	if (strchr("ajglskdjbksjbksj", 'l') != ft_strchr("ajglskdjbksjbksj", 'l'))
+		return (-1);
+	if (strchr("Hello i don't have the char", 'x') != ft_strchr("Hello i don't "
+				"have the char", 'x'))
+		return (-1);
+	return (0);
+}
+
 int			atoi_base_tests(void)
 {
-	printf("expected: 15, got: %d\n", ft_atoi_base("15", "3"));
+	printf("ft_atoi_base tests, bases 2-10\n---------------------------\n\n");
+	printf("expected: 15, got: %d\n", ft_atoi_base("15", "10"));
+	printf("expected: 102, got: %d\n", ft_atoi_base("123", "9"));
+	printf("expected: 22661, got: %d\n", ft_atoi_base("34068", "9"));
+	printf("expected: 1872, got: %d\n", ft_atoi_base("1872", "10"));
+	printf("expected: 718293, got: %d\n", ft_atoi_base("718293", "10"));
+	printf("expected: 350, got: %d\n", ft_atoi_base("0101011110", "2"));
+	printf("\n\n");
+	printf("ft_atoi_base tests, bases 11-36\n---------------------------\n\n");
+	printf("expected: 10, got: %d\n", ft_atoi_base("A", "28"));
+	printf("expected: 8160, got: %d\n", ft_atoi_base("ABC", "28"));
+	printf("expected: 478908, got: %d\n", ft_atoi_base("LMNO", "28"));
+	printf("expected: -478908, got: %d\n", ft_atoi_base("-LMNO", "28"));
+	printf("expected: 45755, got: %d\n", ft_atoi_base("zaz", "36"));
+	printf("expected: 0, got: %d\n", ft_atoi_base("-0", "36"));
+	printf("\n\n");
+	printf("Error return tests\n-------------------------\n\n");
 	printf("expected: 0, got: %d\n", ft_atoi_base("", "3"));
 	printf("expected: 0, got: %d\n", ft_atoi_base("1872", ""));
-	printf("expected: 15, got: %d\n", ft_atoi_base("1872", " "));
+	printf("expected: 0, got: %d\n", ft_atoi_base("1872", "   "));
+	printf("expected: 0, got: %d\n", ft_atoi_base("1872", "-15"));
+	printf("expected: 0, got: %d\n", ft_atoi_base("010110112", "-2"));
+	printf("expected: 0, got: %d\n", ft_atoi_base("010110112", "37"));
+	return (0);
+}
+
+void		print_list(t_list **head)
+{
+	t_list		*current;
+	int			x;
+
+	x = 0;
+	current = *head;
+	while (current)
+	{
+		printf("List[%d]: %d\n", x, *(int *)current->data);
+		current = current->next;
+		x++;
+	}
+}
+
+int			list_front_tests(t_list **head, int *a)
+{
+	*a = 999;
+	print_list(head);
+	ft_list_push_front(head, a);
+	print_list(head);
 	return (0);
 }
 
@@ -293,15 +364,59 @@ int			main(void)
 	/* 	printf("strdup test failure\n"); */
 	/* 	return (-1); */
 	/* } */
-	if (atoi_tests() < 0)
-	{
-		printf("atoi test failure\n");
-		return (-1);
-	}
-	/* if (atoi_base_tests() < 0) */
+	/* if (atoi_tests() < 0) */
 	/* { */
-	/* 	printf("ft_atoi_base test failure\n"); */
+	/* 	printf("atoi test failure\n"); */
 	/* 	return (-1); */
 	/* } */
+	/* if (strchr_tests() < 0) */
+	/* { */
+	/* 	printf("ft_strchr test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	if (atoi_base_tests() < 0)
+	{
+		printf("ft_atoi_base test failure\n");
+		return (-1);
+	}
+
+	t_list		*head;
+	int			x;
+	int			y;
+	int			z;
+	int			a;
+
+	x = 15;
+	y = 300;
+	z = 1500;
+	head = (t_list *)malloc(sizeof(t_list));
+	if (!head)
+		return (-1);
+	head->data = &x;
+	head->next = (t_list *)malloc(sizeof(t_list));
+	if (!head->next)
+	{
+		free(head);
+		return (-1);
+	}
+	head->next->data = &y;
+	head->next->next = (t_list *)malloc(sizeof(t_list));
+	if (!head->next->next)
+	{
+		free(head->next);
+		free(head);
+		return (-1);
+	}
+	head->next->next->data = &z;
+	head->next->next->next = NULL;
+	print_list(&head);
+	if (list_front_tests(&head, &a) < 0)
+	{
+		free(head->next->next);
+		free(head->next);
+		free(head);
+		return (-1);
+	}
+	printf("size of t_list = %lu\n", sizeof(t_list));
 	return (0);
 }
