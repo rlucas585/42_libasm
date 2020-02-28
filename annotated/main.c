@@ -6,7 +6,7 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/20 09:50:55 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/26 16:21:52 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/02/28 10:44:45 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,6 +305,7 @@ int			atoi_base_tests(void)
 	printf("expected: 0, got: %d\n", ft_atoi_base("1872", "-15"));
 	printf("expected: 0, got: %d\n", ft_atoi_base("010110112", "-2"));
 	printf("expected: 0, got: %d\n", ft_atoi_base("010110112", "37"));
+	printf("\n\n");
 	return (0);
 }
 
@@ -326,9 +327,43 @@ void		print_list(t_list **head)
 int			list_front_tests(t_list **head, int *a)
 {
 	*a = 999;
+	printf("ft_list_push_front tests\n-------------------------\n\n");
+	printf("Prior to ft_list_push_front:\n");
 	print_list(head);
+	printf("\n\n");
 	ft_list_push_front(head, a);
+	printf("After ft_list_push_front:\n");
 	print_list(head);
+	printf("\n\n");
+	return (0);
+}
+
+int			list_size_tests(t_list *head)
+{
+	static int	x = 0;
+
+	x++;
+	if (x == 1)
+	{
+		printf("ft_list_size tests 1\n-------------------------\n\n");
+		printf("Expected: 3, Got: %d\n", ft_list_size(head));
+		printf("Expected: 2, Got: %d\n", ft_list_size(head->next));
+		printf("Expected: 0, Got: %d\n", ft_list_size(NULL));
+		printf("\n\n");
+		if (ft_list_size(head) != 3)
+			return (-1);
+	}
+	if (x == 2)
+	{
+		printf("ft_list_size tests 2\n-------------------------\n\n");
+		printf("Expected: 4, Got: %d\n", ft_list_size(head));
+		printf("Expected: 3, Got: %d\n", ft_list_size(head->next));
+		printf("Expected: 1, Got: %d\n", ft_list_size(head->next->next->next));
+		printf("Expected: 0, Got: %d\n", ft_list_size(NULL));
+		printf("\n\n");
+		if (ft_list_size(head) != 4)
+			return (-1);
+	}
 	return (0);
 }
 
@@ -374,11 +409,11 @@ int			main(void)
 	/* 	printf("ft_strchr test failure\n"); */
 	/* 	return (-1); */
 	/* } */
-	if (atoi_base_tests() < 0)
-	{
-		printf("ft_atoi_base test failure\n");
-		return (-1);
-	}
+	/* if (atoi_base_tests() < 0) */
+	/* { */
+	/* 	printf("ft_atoi_base test failure\n"); */
+	/* 	return (-1); */
+	/* } */
 
 	t_list		*head;
 	int			x;
@@ -409,7 +444,14 @@ int			main(void)
 	}
 	head->next->next->data = &z;
 	head->next->next->next = NULL;
-	print_list(&head);
+	if (list_size_tests(head) < 0)
+	{
+		free(head->next->next->next);
+		free(head->next->next);
+		free(head->next);
+		free(head);
+		return (-1);
+	}
 	if (list_front_tests(&head, &a) < 0)
 	{
 		free(head->next->next);
@@ -417,6 +459,13 @@ int			main(void)
 		free(head);
 		return (-1);
 	}
-	printf("size of t_list = %lu\n", sizeof(t_list));
+	if (list_size_tests(head) < 0)
+	{
+		free(head->next->next->next);
+		free(head->next->next);
+		free(head->next);
+		free(head);
+		return (-1);
+	}
 	return (0);
 }

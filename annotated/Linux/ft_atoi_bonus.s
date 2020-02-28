@@ -5,20 +5,21 @@
 #                                                      +:+                     #
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
-#    Created: 2020/02/27 23:26:50 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/27 23:26:53 by rlucas        ########   odam.nl          #
+#    Created: 2020/02/27 23:26:35 by rlucas        #+#    #+#                  #
+#    Updated: 2020/02/28 09:49:22 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 ; Assembly language ft_atoi, with annotated comments
+; For Linux systems rather than MacOSX
 
 ; ft_atoi prototype: int	ft_atoi_base(const char *str);
 
 ; rdi = str
 
-				global		_ft_atoi
+				global		ft_atoi
 
-_ft_atoi:		push		rbp			; Standard prologue
+ft_atoi:		push		rbp			; Standard prologue
 				mov			rbp, rsp
 
 				sub			rsp, 16

@@ -5,25 +5,26 @@
 #                                                      +:+                     #
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
-#    Created: 2020/02/26 15:59:17 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 10:23:15 by rlucas        ########   odam.nl          #
+#    Created: 2020/02/28 09:53:09 by rlucas        #+#    #+#                  #
+#    Updated: 2020/02/28 09:53:36 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-; Assembly language ft_list_push_front, with annotated comments
+; Assembly language ft_list_push_front_bonus, with annotated comments
+; For Linux systems
 
-; ft_list_push_front prototype:
-;	void	*ft_list_push_front(t_list **begin_list, void *data);
+; ft_list_push_front_bonus prototype:
+;	void	*ft_list_push_front_bonus(t_list **begin_list, void *data);
 
 ; A t_list has size 16, and this is the size used for the malloc.
 
 ; rdi = **begin_list
 ; rsi = *data
 
-				global		_ft_list_push_front
-				extern		_malloc
+				global		ft_list_push_front
+				extern		malloc
 				
-_ft_list_push_front:
+ft_list_push_front:
 				push		rbp
 				mov			rbp, rsp
 
@@ -33,7 +34,7 @@ _ft_list_push_front:
 				mov			[rsp], rsi	; Storing *data in stack
 
 				mov			rdi, 16		; Size for new t_list structure
-				call		_malloc		
+				call		malloc		
 				test		rax, rax	; 'rax' is NULL if error, and the
 										; pointer to the new area of memory
 										; otherwise.
