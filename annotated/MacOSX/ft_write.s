@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/19 15:56:05 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/24 17:38:09 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/28 13:01:39 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@
 
 ; rdi = fd
 ; rsi = buf
-; rcx = n
+; rdx = n
 
 			global		_ft_write
 

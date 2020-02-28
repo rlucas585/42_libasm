@@ -6,7 +6,7 @@
 #    By: rlucas <ryanl585codam@gmail.com>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/22 00:56:40 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/22 11:37:54 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/28 16:25:04 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,23 +19,26 @@
 
 			global		_ft_strcmp
 
-_ft_strcmp:	push		rbp
+_ft_strcmp:	
+			push		rbp
 			mov			rbp, rsp
-loop:		mov			al, 0
-			mov			al, [rdi]
-			sub			al, [rsi]
+
+loop:
+			mov			al, 0
+			mov			al, byte [rdi]
+			sub			al, byte [rsi]
 			cmp			[rdi], byte 0
-			je			diff
-			cmp			[rsi], byte 0
 			je			diff
 			cmp			al, 0
 			jne			diff
 			inc			rsi
 			inc			rdi
 			jmp			loop
-diff:		mov			rsp, rbp
-			pop			rbp
+
+diff:		
 			movsx		rax, byte al
+			mov			rsp, rbp
+			pop			rbp
 			ret
 
 ; So many things went wrong while writing this function.

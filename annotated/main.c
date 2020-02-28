@@ -6,7 +6,7 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/20 09:50:55 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/28 10:44:45 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/02/28 16:30:39 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,9 @@ int			strcmp_tests(void)
 {
 	char		*s1 = NULL;
 	char		*s2 = NULL;
+	char		str1[] = "different!";
+	char		str2[] = "Different!";
+	char		str3[] = "";
 
 	s1 = strdup("String2");
 	if (!s1)
@@ -184,7 +187,7 @@ int			strcmp_tests(void)
 	}
 	free(s1);
 	free(s2);
-	s1 = strdup("");
+	s1 = strdup("S");
 	if (!s1)
 		return (-1);
 	s2 = strdup("String2");
@@ -198,6 +201,14 @@ int			strcmp_tests(void)
 		free(s2);
 		return (-1);
 	}
+	free(s1);
+	free(s2);
+	printf("strcmp result = %d\n", strcmp(str1, str2));
+	printf("ft_strcmp result = %d\n", ft_strcmp(str1, str2));
+	printf("strcmp result = %d\n", strcmp(str3, str2));
+	printf("ft_strcmp result = %d\n", ft_strcmp(str3, str2));
+	if (strcmp(str1, str2) != ft_strcmp(str1, str2))
+		return (-1);
 	return (0);
 }
 
@@ -324,6 +335,23 @@ void		print_list(t_list **head)
 	}
 }
 
+void		print_list_str(t_list **head)
+{
+	t_list		*current;
+	int			x;
+
+	x = 0;
+	if (!head)
+		return ;
+	current = *head;
+	while (current)
+	{
+		printf("List[%d]: %s\n", x, (char *)current->data);
+		current = current->next;
+		x++;
+	}
+}
+
 int			list_front_tests(t_list **head, int *a)
 {
 	*a = 999;
@@ -336,6 +364,28 @@ int			list_front_tests(t_list **head, int *a)
 	print_list(head);
 	printf("\n\n");
 	return (0);
+}
+
+void		free_list(t_list **head)
+{
+	t_list		**current;
+	t_list		*next;
+
+	if (!head)
+		return ;
+	if (!(*head))
+		return ;
+	current = head;
+	while ((*current)->next)
+	{
+		next = (*current)->next;
+		free(*current);
+		*current = NULL;
+		*current = next;
+	}
+	free(*current);
+	*current = NULL;
+	head = NULL;
 }
 
 int			list_size_tests(t_list *head)
@@ -367,54 +417,8 @@ int			list_size_tests(t_list *head)
 	return (0);
 }
 
-int			main(void)
+int			list_tests(void)
 {
-	/* if (write_tests() < 0) */
-	/* { */
-	/* 	printf("write test failure\n"); */
-	/* 	return (-1); */
-	/* } */
-	/* if (read_tests() < 0) */
-	/* { */
-	/* 	printf("read test failure\n"); */
-	/* 	return (-1); */
-	/* } */
-	/* if (strlen_tests() < 0) */
-	/* { */
-	/* 	printf("strlen test failure\n"); */
-	/* 	return (-1); */
-	/* } */
-	/* if(strcpy_tests() < 0) */
-	/* { */
-	/* 	printf("strcpy test failure\n"); */
-	/* 	return (-1); */
-	/* } */
-	/* if(strcmp_tests() < 0) */
-	/* { */
-	/* 	printf("strcpy test failure\n"); */
-	/* 	return (-1); */
-	/* } */
-	/* if (strdup_tests() < 0) */
-	/* { */
-	/* 	printf("strdup test failure\n"); */
-	/* 	return (-1); */
-	/* } */
-	/* if (atoi_tests() < 0) */
-	/* { */
-	/* 	printf("atoi test failure\n"); */
-	/* 	return (-1); */
-	/* } */
-	/* if (strchr_tests() < 0) */
-	/* { */
-	/* 	printf("ft_strchr test failure\n"); */
-	/* 	return (-1); */
-	/* } */
-	/* if (atoi_base_tests() < 0) */
-	/* { */
-	/* 	printf("ft_atoi_base test failure\n"); */
-	/* 	return (-1); */
-	/* } */
-
 	t_list		*head;
 	int			x;
 	int			y;
@@ -438,34 +442,168 @@ int			main(void)
 	head->next->next = (t_list *)malloc(sizeof(t_list));
 	if (!head->next->next)
 	{
-		free(head->next);
-		free(head);
+		free_list(&head);
 		return (-1);
 	}
 	head->next->next->data = &z;
 	head->next->next->next = NULL;
 	if (list_size_tests(head) < 0)
 	{
-		free(head->next->next->next);
-		free(head->next->next);
-		free(head->next);
-		free(head);
+		free_list(&head);
 		return (-1);
 	}
 	if (list_front_tests(&head, &a) < 0)
 	{
-		free(head->next->next);
-		free(head->next);
-		free(head);
+		free_list(&head);
 		return (-1);
 	}
 	if (list_size_tests(head) < 0)
 	{
-		free(head->next->next->next);
-		free(head->next->next);
-		free(head->next);
-		free(head);
+		free_list(&head);
 		return (-1);
 	}
+	free_list(&head);
+
+	char	str1[] = "Giraffe";
+	char	str2[] = "Anteater";
+	char	str3[] = "Porcupine";
+	char	str4[] = "Binturong";
+	char	str5[] = "Zebra";
+	char	str6[] = "Lion";
+	char	str7[] = "Thijs";
+
+	head = (t_list *)malloc(sizeof(t_list));
+	if (!head)
+		return (-1);
+	head->data = str1;
+	head->next = (t_list *)malloc(sizeof(t_list));
+	if (!head->next)
+	{
+		free_list(&head);
+		return (-1);
+	}
+	head->next->data = str2;
+	head->next->next = (t_list *)malloc(sizeof(t_list));
+	if (!head->next->next)
+	{
+		free_list(&head);
+		return (-1);
+	}
+	head->next->next->data = str3;
+	head->next->next->next = NULL;
+	ft_list_push_front(&head, str4);
+	ft_list_push_front(&head, str5);
+	ft_list_push_front(&head, str6);
+	ft_list_push_front(&head, str7);
+	printf("list_sort test 1\n------------------------\n\n");
+	printf("Before:\n");
+	print_list_str(&head);
+	printf("\n\n");
+	ft_list_sort(&head, &ft_strcmp);
+	printf("After:\n");
+	print_list_str(&head);
+	free_list(&head);
+	printf("\n\n");
+
+	t_list		**ptr_to_head;
+
+	ptr_to_head = &head;
+	print_list_str(ptr_to_head);
+	ft_list_push_front(ptr_to_head, str6);
+	ft_list_push_front(ptr_to_head, str2);
+	ft_list_push_front(ptr_to_head, str2);
+	ft_list_push_front(ptr_to_head, str7);
+	ft_list_push_front(ptr_to_head, str4);
+	printf("list_sort test 2\n------------------------\n\n");
+	printf("Before:\n");
+	print_list_str(ptr_to_head);
+	printf("\n\n");
+	ft_list_sort(ptr_to_head, &ft_strcmp);
+	printf("After:\n");
+	print_list_str(ptr_to_head);
+	free_list(ptr_to_head);
+	printf("\n\n");
+
+	char	str10[] = "Vim user";
+	char	str20[] = "Vim user";
+	char	str30[] = "Visual Studio Code user";
+	char	str40[] = "Visual Studio Code user";
+	char	str50[] = "Vim user";
+	char	str60[] = "Visual Studio Code user";
+	char	str70[] = "Vim user";
+	char	str80[] = "Visual Studio Code user";
+	char	str90[] = "Visual Studio Code user";
+	char	str_ew[] = "Visual Studio Code user";
+
+	ft_list_push_front(ptr_to_head, str30);
+	ft_list_push_front(ptr_to_head, str10);
+	ft_list_push_front(ptr_to_head, str20);
+	ft_list_push_front(ptr_to_head, str40);
+	ft_list_push_front(ptr_to_head, str50);
+	ft_list_push_front(ptr_to_head, str60);
+	ft_list_push_front(ptr_to_head, str70);
+	ft_list_push_front(ptr_to_head, str80);
+	ft_list_push_front(ptr_to_head, str90);
+	printf("list_remove_if test 1\n------------------------\n\n");
+	printf("Before:\n");
+	print_list_str(ptr_to_head);
+	printf("\n\n");
+	ft_list_remove_if(ptr_to_head, str_ew, &ft_strcmp);
+	printf("After:\n");
+	print_list_str(ptr_to_head);
+	free_list(ptr_to_head);
+	return (0);
+}
+
+int			main(void)
+{
+	/* if (write_tests() < 0) */
+	/* { */
+	/* 	printf("write test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	/* if (read_tests() < 0) */
+	/* { */
+	/* 	printf("read test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	/* if (strlen_tests() < 0) */
+	/* { */
+	/* 	printf("strlen test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	/* if(strcpy_tests() < 0) */
+	/* { */
+	/* 	printf("strcpy test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	if(strcmp_tests() < 0)
+	{
+		printf("strcmp test failure\n");
+		return (-1);
+	}
+	/* if (strdup_tests() < 0) */
+	/* { */
+	/* 	printf("strdup test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	/* if (atoi_tests() < 0) */
+	/* { */
+	/* 	printf("atoi test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	/* if (strchr_tests() < 0) */
+	/* { */
+	/* 	printf("ft_strchr test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+	/* if (atoi_base_tests() < 0) */
+	/* { */
+	/* 	printf("ft_atoi_base test failure\n"); */
+	/* 	return (-1); */
+	/* } */
+
+	if (list_tests() < 0)
+		return (-1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/26 15:59:17 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 10:23:15 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/28 13:29:21 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,9 @@
 _ft_list_push_front:
 				push		rbp
 				mov			rbp, rsp
+
+				test		rdi, rdi	; If begin_list == NULL, return
+				jz			err
 
 				sub			rsp, 16
 				mov			[rsp], rdi	; Storing **begin_list in stack
@@ -47,7 +50,8 @@ _ft_list_push_front:
 				mov			[rax + 8], rcx		; Assign pointer to previous
 												; head to new struct
 
-				mov			rcx, [rsp + 16]		; plaxe **begin_list in rcx
+assign_head:
+				mov			rcx, [rsp + 16]		; place **begin_list in rcx
 				mov			[rcx], rax			; Change the head of the list
 												; to our new struct
 

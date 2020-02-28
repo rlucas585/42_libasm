@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 17:05:34 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/24 11:19:09 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/28 15:53:11 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@
 ft_strcpy:	push		rbp
 			mov			rbp, rsp
 
-			sub			rsp, 8			; Allocating 8 bytes on the stack
+			sub			rsp, 16			; Allocating 16 bytes on the stack
 			mov			[rsp], rdi		; Moving initial pointer value into
 										; the stack. MORE RELIABLE THAN
 										; USING A REGISTER, AS ANOTHER FUNCTION
@@ -42,7 +42,6 @@ loop:		cmp			[rsi], byte 0	; compare the value rsi points to with 0
 
 end:		mov			rax, [rsp]		; Set return value as initial pointer
 										; to dst
-			add			rsp, 8
 			mov			rsp, rbp
 			pop			rbp
 			ret

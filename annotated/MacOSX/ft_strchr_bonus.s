@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/26 10:48:29 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/26 11:46:42 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/28 15:43:01 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,6 @@
 ; rsi = c
 
 			global		_ft_strchr
-
-			section		.text
 
 _ft_strchr:	
 			push		rbp			; Standard prologue
@@ -37,7 +35,6 @@ loop:
 			inc			rcx
 			jmp			loop
 
-
 match:
 			add			rdi, rcx
 			mov			rax, rdi
@@ -45,7 +42,6 @@ match:
 
 err:
 			mov			rax, 0
-
 exit:
 			mov			rsp, rbp
 			pop			rbp

@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 10:00:23 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 10:42:15 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/28 14:44:04 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,9 @@ ASM = $(DIR)ft_write.s \
 	  $(DIR)ft_atoi_base_bonus.s \
 	  $(DIR)ft_strchr_bonus.s \
 	  $(DIR)ft_list_push_front_bonus.s \
-	  $(DIR)ft_list_size_bonus.s
+	  $(DIR)ft_list_size_bonus.s \
+	  $(DIR)ft_list_sort_bonus.s \
+	  $(DIR)ft_list_remove_if_bonus.s
 SRC = main.c
 
 #----------------------------Select Objects-------------------------------------
@@ -43,7 +45,10 @@ OBJ = $(ODIR)$(SRC:.c=.o)
 #------------------------Library and Flags definitions--------------------------
 
 LIBRARY = libasm.h
-FLAGS = -Wall -Wextra -Werror -no-pie
+FLAGS = -Wall -Wextra -Werror
+ifeq ($(OS),Linux)
+	FLAGS += -no-pie
+endif
 
 #--------------------------Compile test executable------------------------------
 

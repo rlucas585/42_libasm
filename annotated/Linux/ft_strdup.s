@@ -6,7 +6,7 @@
 #    By: rlucas <ryanl585codam@gmail.com>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/22 11:38:55 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/24 09:20:51 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/28 15:54:08 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,7 +89,7 @@
 ft_strdup:	push		rbp
 			mov			rbp, rsp
 
-			sub			rsp, 8
+			sub			rsp, 16
 			mov			[rsp], rdi	; We need to use 'rdi' for our malloc call,
 									; but it currently contains our string to
 									; be duplicated, so we copy the address of
@@ -111,7 +111,7 @@ ft_strdup:	push		rbp
 			mov			rdi, rax	; Move the pointer to the new address in
 									; rax to rdi, ready for ft_strcpy.
 			mov			rsi, [rsp]	; Pointer to 's' was moved to stack earlier
-			add			rsp, 8		; for preservation, now it is moved to
+									; for preservation, now it is moved to
 									; rsi, ready for the call to ft_strcpy.
 
 			call		ft_strcpy	; 'rax' still contains pointer to the new

@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/28 10:31:01 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 10:31:50 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/28 11:06:27 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ loop:
 				inc			rax			; Increase count by 1
 				mov			rcx, [rdi + 8]	; Reassign rdi to 'next', using rcx.
 				mov			rdi, rcx
-				jmp			loop:
+				jmp			loop
 
 
 exit:
