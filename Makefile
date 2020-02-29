@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 10:00:23 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 18:16:35 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/28 19:18:59 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ ALLOBJ = $(patsubst $(DIR)%.s,$(ODIR)%.o,$(SRC)$(ASM)$(BONUS))
 
 #------------------------Library and Flags definitions--------------------------
 
-LIBRARY = libasm.h
+HEADERS = libasm.h libasm_bonus.h
 FLAGS = -Wall -Wextra -Werror
 
 #------------------------------Compile Library----------------------------------
@@ -77,7 +77,7 @@ endif
 
 #-------------Create and fill objects directory with *.c sources----------------
 
-$(OBJ): $(SRC) $(LIBRARY)
+$(OBJ): $(SRC) $(HEADER)
 	@mkdir -p $(ODIR)
 	@gcc -c -o $@ $(FLAGS) -I. $<
 
