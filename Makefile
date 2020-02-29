@@ -5,20 +5,8 @@
 #                                                      +:+                     #
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
-#    Created: 2020/02/29 12:03:35 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/29 14:40:48 by rlucas        ########   odam.nl          #
-#                                                                              #
-# **************************************************************************** #
-
-# **************************************************************************** #
-#                                                                              #
-#                                                         ::::::::             #
-#    Makefile                                           :+:    :+:             #
-#                                                      +:+                     #
-#    By: rlucas <marvin@codam.nl>                     +#+                      #
-#                                                    +#+                       #
 #    Created: 2020/02/20 10:00:23 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/29 12:03:19 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/29 18:20:08 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +20,7 @@ LIBRARIES = libasm_bonus.a \
 			libasm.a
 
 DIR = MacOSX/
+TESTDIR = tests/
 
 TESTEXEC = testexec
 
@@ -56,22 +45,22 @@ ifdef WITH_BONUS
 	ASM += $(BONUS)
 endif
 
-SRC = tests.c \
-	  testmain.c
-BONUSSRC = testmain_bonus.c \
-		   tests_bonus.c
+SRC = $(TESTDIR)tests.c \
+	  $(TESTDIR)testmain.c
+BONUSSRC = $(TESTDIR)testmain_bonus.c \
+		   $(TESTDIR)tests_bonus.c
 
 ifdef WITH_BONUS
 	SRC += $(BONUSSRC)
 endif
 
-BONUSOBJ = $(patsubst %.c, $(ODIR)%.o,$(BONUSSRC))
+BONUSOBJ = $(patsubst $(TESTDIR)%.c, $(ODIR)%.o,$(BONUSSRC))
 
 #----------------------------Select Objects-------------------------------------
 
 ODIR = obj/
 ASMOBJ = $(patsubst $(DIR)%.s,$(ODIR)%.o,$(ASM))
-OBJ = $(patsubst %.c,$(ODIR)%.o,$(SRC))
+OBJ = $(patsubst $(TESTDIR)%.c,$(ODIR)%.o,$(SRC))
 ALLOBJ = $(patsubst $(DIR)%.s,$(ODIR)%.o,$(ASM) $(BONUS)) \
 		 $(OBJ) \
 		 $(BONUSOBJ)
@@ -109,7 +98,7 @@ endif
 
 $(OBJ): $(SRC) $(HEADER)
 	@mkdir -p $(ODIR)
-	@gcc $(FLAGS) -I. -c -o $@ $(patsubst $(ODIR)%.o, %.c,$@)
+	@gcc $(FLAGS) -I. -c -o $@ $(patsubst $(ODIR)%.o, $(TESTDIR)%.c,$@)
 
 #-------------Create and fill objects directory with assembly sources-----------
 
@@ -121,7 +110,7 @@ $(ASMOBJ): $(ASM)
 
 clean:
 	@rm -f $(ALLOBJ)
-	@rm -f output.txt
+	@rm -f $(TESTDIR)texts/output.txt
 
 fclean: clean
 	@rm -f $(TESTEXEC)

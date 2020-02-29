@@ -6,7 +6,7 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/20 09:50:55 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/28 16:41:53 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/02/29 18:56:13 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <libasm.h>
+#include <libasm_bonus.h>
 
 int			write_tests(void)
 {
@@ -354,7 +355,7 @@ void		print_list_str(t_list **head)
 
 int			list_front_tests(t_list **head, int *a)
 {
-	*a = 999;
+	*a = 25;
 	printf("ft_list_push_front tests\n-------------------------\n\n");
 	printf("Prior to ft_list_push_front:\n");
 	print_list(head);
@@ -417,113 +418,124 @@ int			list_size_tests(t_list *head)
 	return (0);
 }
 
+int		cmp_num(int *data1, int *data2)
+{
+	return (*data1 - *data2);
+}
+
 int			list_tests(void)
 {
 	t_list		*head;
-	int			x;
-	int			y;
-	int			z;
-	int			a;
+	/* int			x; */
+	/* int			y; */
+	/* int			z; */
+	/* int			a; */
+    /*  */
+	/* x = 40; */
+	/* y = 3; */
+	/* z = 15; */
+	/* head = (t_list *)malloc(sizeof(t_list)); */
+	/* if (!head) */
+	/* 	return (-1); */
+	/* head->data = &x; */
+	/* head->next = (t_list *)malloc(sizeof(t_list)); */
+	/* if (!head->next) */
+	/* { */
+	/* 	free(head); */
+	/* 	return (-1); */
+	/* } */
+	/* head->next->data = &y; */
+	/* head->next->next = (t_list *)malloc(sizeof(t_list)); */
+	/* if (!head->next->next) */
+	/* { */
+	/* 	free_list(&head); */
+	/* 	return (-1); */
+	/* } */
+	/* head->next->next->data = &z; */
+	/* head->next->next->next = NULL; */
+	/* if (list_size_tests(head) < 0) */
+	/* { */
+	/* 	free_list(&head); */
+	/* 	return (-1); */
+	/* } */
+	/* if (list_front_tests(&head, &a) < 0) */
+	/* { */
+	/* 	free_list(&head); */
+	/* 	return (-1); */
+	/* } */
+	/* printf("Before ft_list_sort: \n-----------------------------\n"); */
+	/* print_list(&head); */
+	/* printf("\n\n"); */
+	/* printf("After ft_list_sort: \n-----------------------------\n"); */
+	/* ft_list_sort(&head, &cmp_num); */
+	/* print_list(&head); */
+	/* if (list_size_tests(head) < 0) */
+	/* { */
+	/* 	free_list(&head); */
+	/* 	return (-1); */
+	/* } */
+	/* free_list(&head); */
 
-	x = 15;
-	y = 300;
-	z = 1500;
-	head = (t_list *)malloc(sizeof(t_list));
-	if (!head)
-		return (-1);
-	head->data = &x;
-	head->next = (t_list *)malloc(sizeof(t_list));
-	if (!head->next)
-	{
-		free(head);
-		return (-1);
-	}
-	head->next->data = &y;
-	head->next->next = (t_list *)malloc(sizeof(t_list));
-	if (!head->next->next)
-	{
-		free_list(&head);
-		return (-1);
-	}
-	head->next->next->data = &z;
-	head->next->next->next = NULL;
-	if (list_size_tests(head) < 0)
-	{
-		free_list(&head);
-		return (-1);
-	}
-	if (list_front_tests(&head, &a) < 0)
-	{
-		free_list(&head);
-		return (-1);
-	}
-	if (list_size_tests(head) < 0)
-	{
-		free_list(&head);
-		return (-1);
-	}
-	free_list(&head);
-
-	char	str1[] = "Giraffe";
-	char	str2[] = "Anteater";
-	char	str3[] = "Porcupine";
-	char	str4[] = "Binturong";
-	char	str5[] = "Zebra";
-	char	str6[] = "Lion";
-	char	str7[] = "Thijs";
-
-	head = (t_list *)malloc(sizeof(t_list));
-	if (!head)
-		return (-1);
-	head->data = str1;
-	head->next = (t_list *)malloc(sizeof(t_list));
-	if (!head->next)
-	{
-		free_list(&head);
-		return (-1);
-	}
-	head->next->data = str2;
-	head->next->next = (t_list *)malloc(sizeof(t_list));
-	if (!head->next->next)
-	{
-		free_list(&head);
-		return (-1);
-	}
-	head->next->next->data = str3;
-	head->next->next->next = NULL;
-	ft_list_push_front(&head, str4);
-	ft_list_push_front(&head, str5);
-	ft_list_push_front(&head, str6);
-	ft_list_push_front(&head, str7);
-	printf("list_sort test 1\n------------------------\n\n");
-	printf("Before:\n");
-	print_list_str(&head);
-	printf("\n\n");
-	ft_list_sort(&head, &ft_strcmp);
-	printf("After:\n");
-	print_list_str(&head);
-	free_list(&head);
-	printf("\n\n");
-
+	/* char	str1[] = "Giraffe"; */
+	/* char	str2[] = "Anteater"; */
+	/* char	str3[] = "Porcupine"; */
+	/* char	str4[] = "Binturong"; */
+	/* char	str5[] = "Zebra"; */
+	/* char	str6[] = "Lion"; */
+	/* char	str7[] = "Thijs"; */
+    /*  */
+	/* head = (t_list *)malloc(sizeof(t_list)); */
+	/* if (!head) */
+	/* 	return (-1); */
+	/* head->data = str1; */
+	/* head->next = (t_list *)malloc(sizeof(t_list)); */
+	/* if (!head->next) */
+	/* { */
+	/* 	free_list(&head); */
+	/* 	return (-1); */
+	/* } */
+	/* head->next->data = str2; */
+	/* head->next->next = (t_list *)malloc(sizeof(t_list)); */
+	/* if (!head->next->next) */
+	/* { */
+	/* 	free_list(&head); */
+	/* 	return (-1); */
+	/* } */
+	/* head->next->next->data = str3; */
+	/* head->next->next->next = NULL; */
+	/* ft_list_push_front(&head, str4); */
+	/* ft_list_push_front(&head, str5); */
+	/* ft_list_push_front(&head, str6); */
+	/* ft_list_push_front(&head, str7); */
+	/* printf("list_sort test 1\n------------------------\n\n"); */
+	/* printf("Before:\n"); */
+	/* print_list_str(&head); */
+	/* printf("\n\n"); */
+	/* ft_list_sort(&head, &ft_strcmp); */
+	/* printf("After:\n"); */
+	/* print_list_str(&head); */
+	/* free_list(&head); */
+	/* printf("\n\n"); */
+    /*  */
 	t_list		**ptr_to_head;
 
 	ptr_to_head = &head;
-	print_list_str(ptr_to_head);
-	ft_list_push_front(ptr_to_head, str6);
-	ft_list_push_front(ptr_to_head, str2);
-	ft_list_push_front(ptr_to_head, str2);
-	ft_list_push_front(ptr_to_head, str7);
-	ft_list_push_front(ptr_to_head, str4);
-	printf("list_sort test 2\n------------------------\n\n");
-	printf("Before:\n");
-	print_list_str(ptr_to_head);
-	printf("\n\n");
-	ft_list_sort(ptr_to_head, &ft_strcmp);
-	printf("After:\n");
-	print_list_str(ptr_to_head);
-	free_list(ptr_to_head);
-	printf("\n\n");
-
+	/* print_list_str(ptr_to_head); */
+	/* ft_list_push_front(ptr_to_head, str6); */
+	/* ft_list_push_front(ptr_to_head, str2); */
+	/* ft_list_push_front(ptr_to_head, str2); */
+	/* ft_list_push_front(ptr_to_head, str7); */
+	/* ft_list_push_front(ptr_to_head, str4); */
+	/* printf("list_sort test 2\n------------------------\n\n"); */
+	/* printf("Before:\n"); */
+	/* print_list_str(ptr_to_head); */
+	/* printf("\n\n"); */
+	/* ft_list_sort(ptr_to_head, &ft_strcmp); */
+	/* printf("After:\n"); */
+	/* print_list_str(ptr_to_head); */
+	/* free_list(ptr_to_head); */
+	/* printf("\n\n"); */
+    /*  */
 	char	str10[] = "Vim user";
 	char	str20[] = "Vim user";
 	char	str30[] = "Visual Studio Code user";
@@ -548,7 +560,7 @@ int			list_tests(void)
 	printf("Before:\n");
 	print_list_str(ptr_to_head);
 	printf("\n\n");
-	ft_list_remove_if(ptr_to_head, str_ew, &ft_strcmp);
+	ft_list_remove_if(ptr_to_head, str_ew, &strcmp);
 	printf("After:\n");
 	print_list_str(ptr_to_head);
 	free_list(ptr_to_head);
@@ -597,12 +609,12 @@ int			main(void)
 	/* 	printf("ft_strchr test failure\n"); */
 	/* 	return (-1); */
 	/* } */
-	if (atoi_base_tests() < 0)
-	{
-		printf("ft_atoi_base test failure\n");
-		return (-1);
-	}
-	/* if (list_tests() < 0) */
+	/* if (atoi_base_tests() < 0) */
+	/* { */
+	/* 	printf("ft_atoi_base test failure\n"); */
 	/* 	return (-1); */
+	/* } */
+	if (list_tests() < 0)
+		return (-1);
 	return (0);
 }

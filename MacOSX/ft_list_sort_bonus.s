@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/28 11:07:49 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 17:17:13 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/29 19:21:30 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ _ft_list_sort:
 				push		r15				; r15: Check if swaps
 				push		r12				; r12: Current element
 				push		r13				; r13: Next element
+				sub			rsp, 8			; Stack alignment
 
 				sub			rsp, 16			; (*cmp)() on stack.
 				mov			[rsp], rsi
@@ -56,13 +57,14 @@ next_elem:
 				mov			r12, r13		; current = current->next
 
 loop:
+				xor			rax, rax
 				mov			r13, [r12 + 8]	; next = current->next
 				test		r13, r13		; (next == NULL)
 				jz			reset
 				mov			rdi, [r12]		; rdi = current->data
 				mov			rsi, [r13]		; rsi = next->data
 				call		[rsp + 16]		; rax = cmp(rdi, rsi)
-				cmp			rax, 0
+				cmp			eax, 0			; if 'rax', does not work correctly
 				jle			next_elem
 											
 				inc			r15				; r15++

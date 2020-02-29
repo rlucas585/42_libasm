@@ -6,7 +6,7 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 19:02:53 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/29 13:55:59 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/02/29 15:55:03 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 #include <libasm.h>
 #include <stdio.h>
 
-void	assert_eq(char *actual, const char *expected)
+void	expect_eq(char *actual, const char *expected)
 {
 	if (!actual)
-		cr_assert_fail("*Actual*: NULL\nExpected: \"%s\"", expected);
+		cr_expect_fail("*Actual*: NULL\nExpected: \"%s\"", expected);
 	else
-		cr_assert_str_eq(actual, expected, "*Actual*: \"%s\""
+		cr_expect_str_eq(actual, expected, "*Actual*: \"%s\""
 				"\nExpected: \"%s\"", actual, expected);
 }
 
@@ -31,7 +31,7 @@ void	strdup_test(const char *str)
 
 	mystr = ft_strdup(str);
 	teststr = strdup(str);
-	assert_eq(mystr, teststr);
+	expect_eq(mystr, teststr);
 	free(mystr);
 	free(teststr);
 }
@@ -43,14 +43,14 @@ void	strcmp_test(const char *str1, const char *str2)
 
 	str3 = strdup(str1);
 	str4 = strdup(str2);
-	cr_assert(strcmp(str3, str4) == ft_strcmp(str3, str4));
+	cr_expect(strcmp(str3, str4) == ft_strcmp(str3, str4));
 	free(str3);
 	free(str4);
 }
 
 void	strlen_test(const char *str)
 {
-	cr_assert(strlen(str) == ft_strlen(str));
+	cr_expect(strlen(str) == ft_strlen(str));
 }
 
 void	strcpy_test(const char *str)
@@ -64,14 +64,16 @@ void	strcpy_test(const char *str)
 	str2 = (char *)malloc(sizeof(char) * strlen(str));
 	strcpy(str1, str);
 	ft_strcpy(str2, str);
-	cr_assert_str_eq(str2, str1, "*Actual*: \"%s\""
+	cr_expect_str_eq(str2, str1, "*Actual*: \"%s\""
 			"\nExpected: \"%s\"", str2, str1);
 	free(str1);
 	free(str2);
 	strcpy(str3, str);
 	ft_strcpy(str4, str);
-	cr_assert_str_eq(str4, str3, "*Actual*: \"%s\""
+	cr_expect_str_eq(str4, str3, "*Actual*: \"%s\""
 			"\nExpected: \"%s\"", str4, str3);
+	bzero(str3, 300);
+	bzero(str4, 300);
 }
 
 void	read_test(const char *str)
@@ -88,7 +90,7 @@ void	read_test(const char *str)
 	fd = open(str, O_RDONLY);
 	ret = ft_read(fd, mybuf, 30);
 	mybuf[ret] = '\0';
-	cr_assert_str_eq(mybuf, sysbuf, "*Actual*: \"%s\""
+	cr_expect_str_eq(mybuf, sysbuf, "*Actual*: \"%s\""
 			"\nExpected: \"%s\"", mybuf, sysbuf);
 	close(fd);
 }
@@ -100,7 +102,7 @@ void	write_test(const char *str)
 	FILE	*file;
 	FILE	*expected;
 
-	fd = open("output.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
+	fd = open("tests/texts/output.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	i = 0;
 	while (str[i])
 	{
@@ -108,9 +110,9 @@ void	write_test(const char *str)
 		i++;
 	}
 	close(fd);
-	file = fopen("output.txt", "r");
-	expected = fopen("darth_plagueis.txt", "r");
-	cr_assert_file_contents_eq(file, expected);
+	file = fopen("tests/texts/output.txt", "r");
+	expected = fopen("tests/texts/darth_plagueis.txt", "r");
+	cr_expect_file_contents_eq(file, expected);
 	fclose(file);
 	fclose(expected);
 }

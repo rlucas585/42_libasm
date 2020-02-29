@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/28 11:07:49 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 12:48:58 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/29 18:14:21 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,7 +81,7 @@ loop:
 				; 'rdi' and 'rsi' are prepared for the call to ft_strcmp
 
 				call		[rsp + 16]		; Jumping to supplied function.
-				cmp			rax, 0
+				cmp			eax, 0			; Must be 'eax' and not 'rax'
 				jle			next_elem		; Nothing to be done, move to next
 											; element.
 

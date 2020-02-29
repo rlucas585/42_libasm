@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/24 11:56:14 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 17:06:30 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/29 19:57:21 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,8 @@ check_base_sign:
 				jnz			err
 
 		; No '+' or '-' in base
+
+				mov			rdi, [rsp]	; 'rdi' = base
 				
 				mov			rdi, [rsp]	; 'rdi' = base
 				call		_ft_atoi

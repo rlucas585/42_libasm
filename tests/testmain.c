@@ -6,14 +6,14 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 17:46:43 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/29 13:36:32 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/02/29 15:55:18 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <criterion/criterion.h>
 #include <libasm.h>
 
-void	assert_eq(char *actual, const char *expected);
+void	expect_eq(char *actual, const char *expected);
 void	strdup_test(const char *str);
 void	strcmp_test(const char *str1, const char *str2);
 void	strlen_test(const char *str);
@@ -83,8 +83,8 @@ Test(Mandatory_Tests, strcpy_test)
 
 Test(Mandatory_Tests, read_test)
 {
-	read_test("testread.txt");
-	read_test("notafile.txt");
+	read_test("tests/texts/testread.txt");
+	read_test("tests/texts/notafile.txt");
 }
 
 Test(Mandatory_Tests, write_test)
