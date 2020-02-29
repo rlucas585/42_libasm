@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 17:05:34 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/24 11:47:12 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/29 13:24:44 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ loop:		cmp			[rsi], byte 0	; compare the value rsi points to with 0
 			inc			rdi
 			jmp			loop			; Repeat the loop again
 
-end:		mov			rax, [rsp]		; Set return value as initial pointer
+end:		mov			rax, 0			; Add null-terminator
+			mov			[rdi], rax
+			mov			rax, [rsp]		; Set return value as initial pointer
 										; to dst
 			add			rsp, 16
 			mov			rsp, rbp

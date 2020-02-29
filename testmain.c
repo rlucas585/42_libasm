@@ -1,91 +1,108 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   testmain.c                                         :+:    :+:            */
+/*   tests.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/02/28 19:02:53 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/28 19:27:16 by rlucas        ########   odam.nl         */
+/*   Created: 2020/02/28 17:46:43 by rlucas        #+#    #+#                 */
+/*   Updated: 2020/02/29 13:36:32 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <criterion/criterion.h>
 #include <libasm.h>
-#include <libasm_bonus.h>
 
-void	assert_eq(char *actual, const char *expected)
+void	assert_eq(char *actual, const char *expected);
+void	strdup_test(const char *str);
+void	strcmp_test(const char *str1, const char *str2);
+void	strlen_test(const char *str);
+void	strcpy_test(const char *str);
+void	read_test(const char *str);
+void	write_test(const char *str);
+
+Test(Mandatory_Tests, strdup_test)
 {
-	if (!actual)
-		cr_assert_fail("*Actual*: NULL\nExpected: \"%s\"", expected);
-	else
-		cr_assert_str_eq(actual, expected, "*Actual*: \"%s\""
-				"\nExpected: \"%s\"", actual, expected);
+	strdup_test("A test with a moderate length string\n");
+	strdup_test("");
+	strdup_test("											"
+			"							empty				"
+			"with				tabs");
 }
 
-void	strdup_test(const char *str)
+Test(Mandatory_Tests, strcmp_test)
 {
-	char		*mystr;
-	char		*teststr;
-
-	mystr = ft_strdup(str);
-	teststr = strdup(str);
-	assert_eq(mystr, teststr);
-	free(mystr);
-	free(teststr);
+	strcmp_test("STRing 1", "STRing 2");
+	strcmp_test("", "STRing 2");
+	strcmp_test("oadkfskfjl", "--wkwefjk3jf");
+	strcmp_test("Exactly the same", "Exactly the same");
+	strcmp_test("String for compare", "");
 }
 
-void	strcmp_test(const char *str1, const char *str2)
+Test(Mandatory_Tests, strlen_test)
 {
-	char		*str3;
-	char		*str4;
-
-	str3 = strdup(str1);
-	str4 = strdup(str2);
-	cr_assert(strcmp(str3, str4) == ft_strcmp(str3, str4));
-	free(str3);
-	free(str4);
+	strlen_test("string with length");
+	strlen_test("longlonglonglonglonglonglonglonglonglonglonglonglong"
+			"longlonglonglonglonglonglonglonglonglonglong"
+			"longlonglonglonglonglonglonglonglonglonglonglonglong");
+	strlen_test("");
+	strlen_test(
+			"Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not."
+			" It's not a story the Jedi would tell you. It's a Sith legend. Darth "
+			"Plagueis was a Dark Lord of the Sith, so powerful and so wise he could "
+			"use the Force to influence the midichlorians to create life... He had "
+			"such a knowledge of the dark side, he could even keep the ones he cared "
+			"about from dying. The dark side of the Force is a pathway to many "
+			"abilities some consider to be unnatural. He became so powerful... the "
+			"only thing he was afraid of was losing his power, which eventually, "
+			"of course, he did. Unfortunately, he taught his apprentice everything "
+			"he knew, then his apprentice killed him in his sleep. Ironic. He could "
+			"save others from death, but not himself.\n");
+	strlen_test(
+			"Porcupines are large rodents with coats of sharp spines, or "
+			"quills, that protect them against predators. The term covers "
+			"two families of animals: the Old World porcupines of family "
+			"Hystricidae, and the New World porcupines af family Erethizontidae"
+			". Both families belong to the infraorder Hystricognathi within the"
+			" profoundly diverse order Rodentia and display superficially "
+			"similar coats of quills: despite this, the two groups are distinct"
+			" from each other and are not closely related to each other within "
+			"the Hystricognathi."
+			);
 }
 
-void	strlen_test(const char *str)
+Test(Mandatory_Tests, strcpy_test)
 {
-	cr_assert(strlen(str) == ft_strlen(str));
+	strcpy_test("Baba Ganoush");
+	strcpy_test("");
+	strcpy_test("akfjdsklfjsenioeanvevjawklcjekcmkescaklemcklejacklejaklj"
+			"cjeisojfesickjcskljeksjeksjcklesjcklejskcje");
+	strcpy_test("Have you ever heard the story of Darth Plageuius the Wise?"
+			"I thought not. It's not a story the Jedi would teach you.");
 }
 
-void	strcpy_test(const char *str)
+Test(Mandatory_Tests, read_test)
 {
-	char		*str1;
-	char		*str2;
-
-	str1 = (char *)malloc(sizeof(char) * strlen(str));
-	str2 = (char *)malloc(sizeof(char) * strlen(str));
-	strcpy(str1, str);
-	ft_strcpy(str2, str);
-	cr_assert_str_eq(str2, str1, "*Actual*: \"%s\""
-			"\nExpected: \"%s\"", str2, str1);
-	free(str1);
-	free(str2);
+	read_test("testread.txt");
+	read_test("notafile.txt");
 }
 
-void	read_test(const char *str)
+Test(Mandatory_Tests, write_test)
 {
-	int		fd;
-	int		x;
-	int		ret;
-	char	mybuf[40];
-	char	sysbuf[40];
+	char		*str;
 
-	fd = open(str, O_RDONLY);
-	x = 0;
-	while (x < 10)
-	{
-		ret = read(fd, sysbuf, 30);
-		sysbuf[ret] = '\0';
-		ret = ft_read(fd, mybuf, 30);
-		mybuf[ret] = '\0';
-		cr_assert_str_eq(mybuf, sysbuf, "*Actual*: \"%s\""
-				"\nExpected: \"%s\"", mybuf, sysbuf);
-		x++;
-	}
-	close(fd);
+	str = strdup(
+	"Did you ever hear the tragedy of Darth Plagueis The Wise? I thought not."
+	 " It's not a story the Jedi would tell you. It's a Sith legend. Darth "
+	 "Plagueis was a Dark Lord of the Sith, so powerful and so wise he could "
+	 "use the Force to influence the midichlorians to create life... He had "
+	 "such a knowledge of the dark side, he could even keep the ones he cared "
+	 "about from dying. The dark side of the Force is a pathway to many "
+	 "abilities some consider to be unnatural. He became so powerful... the "
+	 "only thing he was afraid of was losing his power, which eventually, "
+	 "of course, he did. Unfortunately, he taught his apprentice everything "
+	 "he knew, then his apprentice killed him in his sleep. Ironic. He could "
+	 "save others from death, but not himself.\n");
+	write_test(str);
+	free(str);
 }

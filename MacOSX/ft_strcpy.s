@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 17:05:34 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 17:21:28 by rlucas        ########   odam.nl          #
+#    Updated: 2020/02/29 13:21:06 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ _ft_strcpy	push		rbp
 			sub			rsp, 16
 			mov			[rsp], rdi		; Allocating original pointer on stack
 
-loop:		cmp			[rsi], byte 0
+loop:
+			cmp			[rsi], byte 0
 			je			end
 			mov			rax, [rsi]
 			mov			[rdi], rax
@@ -33,7 +34,10 @@ loop:		cmp			[rsi], byte 0
 			inc			rdi
 			jmp			loop
 
-end:		mov			rax, [rsp]
+end:		
+			mov			rax, 0			; Null terminator
+			mov			[rdi], rax
+			mov			rax, [rsp]
 			mov			rsp, rbp
 			pop			rbp
 			ret
