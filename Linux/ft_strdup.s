@@ -1,44 +1,42 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         ::::::::             #
-#    ft_strcpy.s                                        :+:    :+:             #
+#    ft_strdup.s                                        :+:    :+:             #
 #                                                      +:+                     #
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
-#    Created: 2020/02/20 17:05:34 by rlucas        #+#    #+#                  #
-#    Updated: 2020/03/05 23:56:05 by rlucas        ########   odam.nl          #
+#    Created: 2020/02/24 11:20:21 by rlucas        #+#    #+#                  #
+#    Updated: 2020/03/05 23:21:53 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-; Assembly language ft_strcpy, with annotated comments
+; Assembly ft_strdup
+; For Linux Systems
 
-; ft_strcpy prototype: char	*ft_strcpy(char *dst, const char *src);
+			global		ft_strdup
+			extern		malloc
+			extern		ft_strlen
+			extern		ft_strcpy
 
-; rdi = dst
-; rsi = src
-
-			global		_ft_strcpy
-
-_ft_strcpy	push		rbp
+ft_strdup:	push		rbp
 			mov			rbp, rsp
 
 			sub			rsp, 16
-			mov			[rsp], rdi		; Allocating original pointer on stack
-			xor			rax, rax
+			mov			[rsp], rdi	; Stack allocate original pointer
 
-loop:
-			cmp			[rsi], byte 0
-			je			end
-			mov			al, byte [rsi]
-			mov			[rdi], al
-			inc			rsi
-			inc			rdi
-			jmp			loop
+			call		ft_strlen	; Length of string
+			mov			rdi, rax
 
-end:		
-			mov			rax, 0			; Null terminator
-			mov			[rdi], al
-			mov			rax, [rsp]
+			inc			rdi			; +1 for '\0'
+									
+			call		malloc
+			test		rax, rax
+			jz			exit
+			mov			rdi, rax
+			mov			rsi, [rsp]
+			call		ft_strcpy	; rax = ft_strcpy(rdi, rsi)
+
+exit:
 			mov			rsp, rbp
 			pop			rbp
 			ret

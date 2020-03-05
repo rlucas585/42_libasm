@@ -6,20 +6,21 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 17:05:34 by rlucas        #+#    #+#                  #
-#    Updated: 2020/03/05 23:56:05 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/05 23:55:52 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-; Assembly language ft_strcpy, with annotated comments
+; Assembly language ft_strcpy
+; For Linux Systems
 
 ; ft_strcpy prototype: char	*ft_strcpy(char *dst, const char *src);
 
 ; rdi = dst
 ; rsi = src
 
-			global		_ft_strcpy
+			global		ft_strcpy
 
-_ft_strcpy	push		rbp
+ft_strcpy	push		rbp
 			mov			rbp, rsp
 
 			sub			rsp, 16

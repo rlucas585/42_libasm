@@ -6,7 +6,7 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/28 19:02:53 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/29 15:55:03 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/03/05 23:57:56 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,15 @@ void	strcpy_test(const char *str)
 	char		str3[300];
 	char		str4[300];
 
-	str1 = (char *)malloc(sizeof(char) * strlen(str));
-	str2 = (char *)malloc(sizeof(char) * strlen(str));
+	str1 = (char *)malloc(sizeof(char) * strlen(str) + 1);
+	if (!str1)
+		return ;
+	str2 = (char *)malloc(sizeof(char) * strlen(str) + 1);
+	if (!str2)
+	{
+		free(str1);
+		return ;
+	}
 	strcpy(str1, str);
 	ft_strcpy(str2, str);
 	cr_expect_str_eq(str2, str1, "*Actual*: \"%s\""

@@ -1,44 +1,47 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         ::::::::             #
-#    ft_strcpy.s                                        :+:    :+:             #
+#    ft_strchr.s                                        :+:    :+:             #
 #                                                      +:+                     #
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
-#    Created: 2020/02/20 17:05:34 by rlucas        #+#    #+#                  #
-#    Updated: 2020/03/05 23:56:05 by rlucas        ########   odam.nl          #
+#    Created: 2020/02/26 10:48:29 by rlucas        #+#    #+#                  #
+#    Updated: 2020/03/05 23:19:01 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-; Assembly language ft_strcpy, with annotated comments
+; Assembly ft_strchr
+; For Linux Systems
 
-; ft_strcpy prototype: char	*ft_strcpy(char *dst, const char *src);
+; ft_strchr prototype: char	*ft_strchr(char *s, int c);
 
-; rdi = dst
-; rsi = src
+; rdi = s
+; rsi = c
 
-			global		_ft_strcpy
+			global		ft_strchr
 
-_ft_strcpy	push		rbp
+ft_strchr:	
+			push		rbp
 			mov			rbp, rsp
-
-			sub			rsp, 16
-			mov			[rsp], rdi		; Allocating original pointer on stack
-			xor			rax, rax
+			mov			rax, rsi
+			xor			rcx, rcx
 
 loop:
-			cmp			[rsi], byte 0
-			je			end
-			mov			al, byte [rsi]
-			mov			[rdi], al
-			inc			rsi
-			inc			rdi
+			cmp			BYTE [rdi + rcx], byte 0
+			je			err
+			cmp			BYTE [rdi + rcx], al
+			je			match
+			inc			rcx
 			jmp			loop
 
-end:		
-			mov			rax, 0			; Null terminator
-			mov			[rdi], al
-			mov			rax, [rsp]
+match:
+			add			rdi, rcx
+			mov			rax, rdi
+			jmp			exit
+
+err:
+			mov			rax, 0
+exit:
 			mov			rsp, rbp
 			pop			rbp
 			ret

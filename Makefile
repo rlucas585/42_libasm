@@ -6,9 +6,20 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 10:00:23 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/29 18:20:08 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/05 23:40:56 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
+
+#-------------------------Find Operating System---------------------------------
+
+OS := $(shell uname)
+ifeq ($(OS),Linux)
+	DIR = Linux/
+else
+	DIR = MacOSX/
+endif
+
+#-------------------------------------------------------------------------------
 
 ifdef WITH_BONUS
 	NAME = libasm_bonus.a
@@ -19,7 +30,6 @@ endif
 LIBRARIES = libasm_bonus.a \
 			libasm.a
 
-DIR = MacOSX/
 TESTDIR = tests/
 
 TESTEXEC = testexec
@@ -79,6 +89,9 @@ $(NAME): $(ASMOBJ)
 
 #-----------------------------Compile with bonus--------------------------------
 
+check:
+	@echo $(ASM)
+
 bonus:
 	@$(MAKE) WITH_BONUS=1 all
 
@@ -89,9 +102,9 @@ bonustest:
 
 test: $(OBJ) $(NAME)
 ifdef WITH_BONUS
-	@gcc $(FLAGS) -I. -o $(TESTEXEC) $(OBJ) -L. -lasm_bonus -lcriterion
+	@gcc $(FLAGS) -I. -o $(TESTEXEC) $(OBJ) -L. -lasm_bonus -lcriterion -no-pie
 else
-	@gcc $(FLAGS) -I. -o $(TESTEXEC) $(OBJ) -L. -lasm -lcriterion
+	@gcc $(FLAGS) -I. -o $(TESTEXEC) $(OBJ) -L. -lasm -lcriterion -no-pie
 endif
 
 #-------------Create and fill objects directory with *.c sources----------------
@@ -104,7 +117,11 @@ $(OBJ): $(SRC) $(HEADER)
 
 $(ASMOBJ): $(ASM)
 	@mkdir -p $(ODIR)
+ifeq ($(OS),Linux)
+	@nasm -felf64 -o $@ $(patsubst $(ODIR)%.o,$(DIR)%.s,$@)
+else
 	@nasm -fmacho64 -o $@ $(patsubst $(ODIR)%.o,$(DIR)%.s,$@)
+endif
 
 #------------------------Utility Make Instructions------------------------------
 
