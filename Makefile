@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 10:00:23 by rlucas        #+#    #+#                  #
-#    Updated: 2020/03/05 23:40:56 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/11 18:36:05 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,10 +101,14 @@ bonustest:
 #--------------------------Compile test executable------------------------------
 
 test: $(OBJ) $(NAME)
-ifdef WITH_BONUS
-	@gcc $(FLAGS) -I. -o $(TESTEXEC) $(OBJ) -L. -lasm_bonus -lcriterion -no-pie
+ifeq ($(OS),Linux)
+	@gcc $(FLAGS) -I. -o $(TESTEXEC) $(OBJ) -L. \
+		-l$(subst .a,,$(subst lib,,$(NAME))) \
+		-lcriterion -no-pie
 else
-	@gcc $(FLAGS) -I. -o $(TESTEXEC) $(OBJ) -L. -lasm -lcriterion -no-pie
+	@gcc $(FLAGS) -I. -o $(TESTEXEC) $(OBJ) -L. \
+		-l$(subst .a,,$(subst lib,,$(NAME))) \
+		-lcriterion
 endif
 
 #-------------Create and fill objects directory with *.c sources----------------

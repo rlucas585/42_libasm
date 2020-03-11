@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/28 11:07:49 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/29 19:21:30 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/11 15:37:25 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,7 +63,7 @@ loop:
 				jz			reset
 				mov			rdi, [r12]		; rdi = current->data
 				mov			rsi, [r13]		; rsi = next->data
-				call		[rsp + 16]		; rax = cmp(rdi, rsi)
+				call		[rsp + 16]				; rax = cmp(rdi, rsi)
 				cmp			eax, 0			; if 'rax', does not work correctly
 				jle			next_elem
 											

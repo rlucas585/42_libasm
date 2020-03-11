@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/28 12:57:18 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/29 19:51:03 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/11 16:15:10 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ _ft_list_remove_if:
 				push		r14				; r14: pointer to next
 				mov			[rsp], rdx		; Storing (*cmp)() on the stack.
 
-				sub			rsp, 16			; Storing **begin_list on stack.
+				sub			rsp, 8			; Storing **begin_list on stack.
 				mov			[rsp], rdi
 
 				sub			rsp, 16
@@ -58,7 +58,8 @@ loop:
 test_data:
 				mov			rdi, [r13]
 				mov			rsi, [rsp]
-				call		[rsp + 32]
+				mov			rcx, [rsp + 24]
+				call		rcx
 				test		rax, rax
 				jz			link_prev
 				jmp			next_elem
@@ -81,9 +82,7 @@ next_elem:
 
 free_prev:
 				mov			rdi, rcx
-				sub			rsp, 8
 				call		_free
-				add			rsp, 8
 				jmp			set_new_next
 
 set_new_prev:

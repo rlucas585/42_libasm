@@ -6,7 +6,7 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/29 13:36:23 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/29 19:10:53 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/03/11 19:39:02 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,55 @@
 
 #define INT 1
 #define STRING 2
+#define PRINT 1
+#define NO_PRINT 0
 
+void	ft_atoi_test(const char *test);
 void	ft_atoi_base_test(const char *test, const char *base,
-		int expected);
+		int expected, int print);
 void	ft_list_push_front_test(int type, void *data, int len);
 void	ft_list_size_test(int type, void *data, int len);
 void	ft_list_sort_test(int type, void *data, int len);
 void	ft_list_remove_if_test(int type, void *data, int len);
 
+Test(Bonus_Tests, ft_atoi_test)
+{
+	ft_atoi_test("147928");
+	ft_atoi_test("-1234897");
+	ft_atoi_test("        -1234897");
+	ft_atoi_test("    -123aaa");
+	ft_atoi_test("			2829b");
+	ft_atoi_test("abcdefg");
+	ft_atoi_test("12893472974920849824");
+	ft_atoi_test("    -12893472974920849824");
+	ft_atoi_test("1289347297492084982428472847");
+	ft_atoi_test("    -1289347297492084982428472847");
+}
+
 Test(Bonus_Tests, ft_atoi_base_test)
 {
-	ft_atoi_base_test("", "", 0);
-	ft_atoi_base_test("lmao", "-28", 0);
-	ft_atoi_base_test("lmao", "28", 478544);
-	ft_atoi_base_test("bouncy", "   36", 706868674);
-	ft_atoi_base_test("10101011111", "5", 10172656);
-	ft_atoi_base_test("-10101011111", "2", -1375);
-	ft_atoi_base_test("-1221020", "3", -1410);
-	ft_atoi_base_test("FEED", "16", 65261);
-	ft_atoi_base_test("hOlA", "23", 0);
-	ft_atoi_base_test("    -hOlA", "25", -281160);
-	ft_atoi_base_test("Ryan", "36", 1304159);
-	ft_atoi_base_test("111", "1", 0);
+	ft_atoi_base_test("510", "011", 0, NO_PRINT);
+	ft_atoi_base_test("510", "0123456789", 510, NO_PRINT);
+	ft_atoi_base_test("-ryan", "0123456789abcdefghijklmnopqrstuvwxyz",
+			-1304159, NO_PRINT);
+	ft_atoi_base_test("+ryan", "0123456789abcdefghijklmnopqrstuvwxyz",
+			1304159, NO_PRINT);
+	ft_atoi_base_test("ryan", "0123456789abcdefghijklmnopqrstuvwxyz",
+			1304159, NO_PRINT);
+	ft_atoi_base_test("aec", "0abcdefghi", 153, NO_PRINT);
+	ft_atoi_base_test("11001010101011", "01", 12971, NO_PRINT);
+	ft_atoi_base_test("", "01", 0, NO_PRINT);
+	ft_atoi_base_test("1500", "", 0, NO_PRINT);
+	ft_atoi_base_test("15		", "	123456789", 1500, NO_PRINT);
+	ft_atoi_base_test("	1500", "0123456789", 0, NO_PRINT);
+	ft_atoi_base_test("			\n-15   00", "0123456789", 0, NO_PRINT);
+	ft_atoi_base_test("-X4ny;;;", ";xy4[]fnGX", -9372000, NO_PRINT);
+	ft_atoi_base_test("-X4ny;;;", ";xy4[ffnGX", 0, NO_PRINT);
+	ft_atoi_base_test("XXX", "OoXx", 42, NO_PRINT);
+	ft_atoi_base_test("01010", "01", 10, NO_PRINT);
+	ft_atoi_base_test("0101010", "01", 42, NO_PRINT);
+	ft_atoi_base_test("thijs", "0123456789abcdefghijklmnopqrstuvwxyz",
+			49526056, NO_PRINT);
 }
 
 Test(Bonus_Tests, ft_list_push_front_test)

@@ -6,13 +6,14 @@
 /*   By: rlucas <marvin@codam.nl>                     +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/02/29 13:42:31 by rlucas        #+#    #+#                 */
-/*   Updated: 2020/02/29 19:53:31 by rlucas        ########   odam.nl         */
+/*   Updated: 2020/03/11 19:22:12 by rlucas        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <criterion/criterion.h>
 #include <libasm.h>
 #include <libasm_bonus.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 #define INT 1
@@ -20,14 +21,30 @@
 
 void	expect_eq(char *actual, const char *expected);
 
+void	ft_atoi_test(const char *test)
+{
+	int		expected;
+	int		actual;
+
+	expected = atoi(test);
+	actual = ft_atoi(test);
+	cr_expect(actual == expected, "Number: %s Expected: %d Actual: %d",
+			test, expected, actual);
+}
+
 void	ft_atoi_base_test(const char *test, const char *base,
-		int expected)
+		int expected, int print)
 {
 	int		actual;
 
 	actual = ft_atoi_base((char *)test, (char *)base);
 	cr_expect(actual == expected, "Number: %s Base: %s Expected: %d Actual %d",
 			test, base, expected, actual);
+	if (print)
+	{
+		printf("Number: %s Base: %s Expected: %d Actual: %d\n",
+				test, base, expected, actual);
+	}
 }
 
 void	ft_list_add_elem_end(t_list **head, void *data)

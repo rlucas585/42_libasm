@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/24 11:56:14 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/29 19:57:21 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/11 19:15:33 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,37 +22,50 @@
 				extern		_ft_atoi
 				extern		_ft_strchr
 
+				section		.data
+%define			STR			[rbp - 48]
+%define			BASE		[rbp - 40]
+%define			SIGN		[rbp - 32]
+
+				section		.text
 _ft_atoi_base:	push		rbp
 				mov			rbp, rsp
 
-				sub			rsp, 16		; Stack allocations
-				mov			[rsp], rdi
-				sub			rsp, 16
-				mov			[rsp], rsi
-				xor			r8, r8
-				xor			r9, r9
-				xor			r10, r10
+			; In this section, I want to store the argument values on the
+			; stack, and save the values of the registers I'll be using.
 
-				call		_ft_strlen	; strlen for 'str'.
+				push		r12			; Will be used to store length of base
+				push		r13			; Return value
+				push		r14			; Increment over 'str'
+
+				sub			rsp, 8
+				xor			rcx, rcx
+				mov			[rsp], rcx	; SIGN variable
+				sub			rsp, 8
+				mov			[rsp], rsi	; BASE variable
+				sub			rsp, 8
+				mov			[rsp], rdi	; Address of 'str'
+
+				call		_ft_strlen
 				test		rax, rax
-				jz			err			; if 'rax' == 0
+				jz			err
 
-				mov			rdi, [rsp]	; 'rdi' = base
-				call		_ft_strlen	; strlen for 'base'.
+				mov			rdi, BASE	; rdi = 'base'
+				call		_ft_strlen
 				test		rax, rax
 				jz			err
 
 		; Both strings checked to see if empty
 
 check_base_sign:
-				mov			rdi, [rsp]	; 'rdi' = base
+				mov			rdi, BASE	; 'rdi' = base
 				xor			rsi, rsi
 				mov			sil, 43
 				call		_ft_strchr	; Check for a '+' in 'base'
 				test		rax, rax
 				jnz			err
 
-				mov			rdi, [rsp]	; 'rdi' = base
+				mov			rdi, BASE	; 'rdi' = base
 				xor			rsi, rsi
 				mov			sil, 45
 				call		_ft_strchr	; Check for a '-' in 'base'
@@ -61,133 +74,78 @@ check_base_sign:
 
 		; No '+' or '-' in base
 
-				mov			rdi, [rsp]	; 'rdi' = base
-				
-				mov			rdi, [rsp]	; 'rdi' = base
-				call		_ft_atoi
-				cmp			rax, 2
-				jl			err
-				cmp			rax, 36
-				jg			err
-				
-				sub			rsp, 16
-				mov			[rsp], rax	; Move base value onto stack
+				xor			r12, r12
+				mov			SIGN, r12
+check_no_dup:
+				mov			rdi, BASE	; 'rdi' = base
+				cmp			BYTE [rdi + r12], 0
+				je			atoi_begin
+				movzx		rsi, BYTE [rdi + r12]
+				add			rdi, r12
+				inc			rdi
+				call		_ft_strchr	; Call ft_strchr from character after
+										; current, to check for dup
+				test		rax, rax
+				jnz			err
+				inc			r12
+				jmp			check_no_dup
 
-		; base is between 2 and 36
-
-				mov			rdi, [rsp + 32]	; 'rdi' = str
+atoi_begin:
+				cmp			r12, 1		; Check that base is over 1
+				jle			err
+				mov			rdi, [rsp]	; 'rdi' = str
 				mov			rax, 0
-				xor			r8, r8		; Set r8 to 0.
-				jmp			skip_whitespace
-
-inc_whitespace:
-				inc			r8
-skip_whitespace:
-				cmp			BYTE [rdi + r8], 0
-				je			exit
-				cmp			BYTE [rdi + r8], 32	; Compare with ' '
-				jz			inc_whitespace
-				cmp			BYTE [rdi + r8], 9	; compare with '\t'
-				jl			exit
-				cmp			BYTE [rdi + r8], 13	; compare with '<CR>'
-				jg			check_num
-				jmp			inc_whitespace
+				xor			r14, r14	; Set r14 to 0.
 
 check_num:
-				movzx		r9, byte [rsp]		; r9 = base
-				cmp			BYTE [rdi + r8], 43	; Compare with '+'
+				cmp			BYTE [rdi + r14], 43	; Compare with '+'
 				je			is_positive
-				cmp			BYTE [rdi + r8], 45	; Compare with '-'
+				cmp			BYTE [rdi + r14], 45	; Compare with '-'
 				je			is_negative
-				sub			rsp, 16
-				mov			rcx, 0
-				mov			[rsp], rcx
+				mov			qword SIGN, 0
 				jmp			num_loop
 
 is_negative:
-				sub			rsp, 16
-				mov			rcx, 1
-				mov			[rsp], rcx
+				mov			qword SIGN, 1
 				jmp			inc_num_loop
 is_positive:
-				sub			rsp, 16
-				mov			rcx, 1
-				mov			[rsp], rcx
+				mov			qword SIGN, 0
 inc_num_loop:
-				inc			r8
+				inc			r14
 num_loop:
-				mov			rdx, [rdi + r8]	; 'dl' = str[i]
-				test		dl, dl
+				mov			rdi, STR
+				mov			rsi, [rdi + r14]	; 'sil' = str[i]
+				test		sil, sil
 				jz			exit			; Exit if str[i] = '\0'
-				jmp			make_lower
-check_in_base:
-				cmp			r9b, 10
-				jle			_0_to_9_
-				jmp			_a_to_z_
-
-_0_to_9_:
-				mov			r10b, dl
-				add			r9b, 47
-				cmp			r10b, r9b
-				jg			err
-				sub			r9b, 47
-				mul			r9			; total *= 'r9' (base)
-				sub			r10b, 48
-				add			rax, r10
+				mov			qword rdi, BASE
+				call		_ft_strchr		; find str[i] in base
+				test		rax, rax
+				jz			err
+				sub			rax, BASE		; len to char str[i] in
+											; strchr of base.
+				mov			rcx, rax
+				mov			rax, r13
+				mul			r12
+				add			rax, rcx
+				mov			r13, rax
 				jmp			inc_num_loop
 
-_a_to_z_:
-				mov			r10b, dl
-				cmp			r10b, 48
-				jl			err
-				cmp			r10b, 57
-				jg			check_under_a
-				jle			_0_to_9_big_base
-over_a:
-				add			r9b, 86
-				cmp			r10b, r9b
-				jg			err
-				sub			r9b, 86
-				mul			r9			; total *= 'r9' (our base)
-				sub			r10b, 87	; gives 'a' a value of 10.
-				add			rax, r10
-				jmp			inc_num_loop
-
-_0_to_9_big_base:
-				mul			r9			; total *= 'r9' (our base)
-				sub			r10b, 48
-				add			rax, r10
-				jmp			inc_num_loop
-				
-
-check_under_a:
-				cmp			r10b, 97
-				jl			err
-				jmp			over_a
-
-make_lower:
-				cmp			dl, byte 'A'
-				jl			check_in_base
-				cmp			dl, byte 'Z'
-				jg			check_in_base
-				add			dl, 32
-				jmp			check_in_base
-
-err:			mov			rax, 0
-				mov			rsp, rbp
-				pop			rbp
-				ret
+err:
+				mov			rax, 0
+				jmp			no_sign
 exit:			
-				mov			rcx, [rsp]
-				test		rcx, rcx
-				jnz			apply_sign
-				mov			rsp, rbp
-				pop			rbp
-				ret
-
-apply_sign:
-				mov			rcx, 0
-				mov			[rsp], rcx
+				mov			rax, r13
+				mov			rcx, SIGN
+				cmp			rcx, 0
+				je			no_sign
 				not			rax
 				inc			rax
-				jmp			exit
+no_sign:
+				add			rsp, 24
+				pop			r14
+				pop			r13
+				pop			r12
+				mov			rsp, rbp
+				pop			rbp
+				ret
+
