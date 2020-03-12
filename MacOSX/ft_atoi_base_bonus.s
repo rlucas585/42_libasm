@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/24 11:56:14 by rlucas        #+#    #+#                  #
-#    Updated: 2020/03/11 19:15:33 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/12 11:21:36 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,9 +30,6 @@
 				section		.text
 _ft_atoi_base:	push		rbp
 				mov			rbp, rsp
-
-			; In this section, I want to store the argument values on the
-			; stack, and save the values of the registers I'll be using.
 
 				push		r12			; Will be used to store length of base
 				push		r13			; Return value

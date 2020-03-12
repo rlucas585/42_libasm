@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 12:20:10 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 17:26:25 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/12 12:47:46 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,15 +16,18 @@
 
 			global		_ft_strlen
 
-_ft_strlen:	push		rbp
+_ft_strlen:
+			push		rbp
 			mov			rbp, rsp
-			mov			al, 0
-			mov			rcx, -1
-			cld
-			repne		scasb
-			not			rcx
-			dec			rcx
-			mov			rax, rcx
+			xor			rax, rax
+loop:
+			mov			cl, BYTE [rdi + rax]
+			test		cl, cl
+			jz			exit
+			inc			rax
+			jmp			loop
+
+exit:
 			mov			rsp, rbp
 			pop			rbp
 			ret

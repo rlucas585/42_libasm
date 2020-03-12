@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/24 11:20:21 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 17:25:23 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/12 12:42:27 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,19 +20,18 @@
 _ft_strdup:	push		rbp
 			mov			rbp, rsp
 
-			sub			rsp, 16
-			mov			[rsp], rdi	; Stack allocate original pointer
+			mov			r12, rdi	; Copy original pointer to a non-volatile
+									; register.
 
 			call		_ft_strlen	; Length of string
 			mov			rdi, rax
 
 			inc			rdi			; +1 for '\0'
-									
-			call		_malloc
-			test		rax, rax
+			call		_malloc		; Malloc appropriate no of bytes
+			test		rax, rax	; Test if allocation was successful
 			jz			exit
 			mov			rdi, rax
-			mov			rsi, [rsp]
+			mov			rsi, r12
 			call		_ft_strcpy	; rax = ft_strcpy(rdi, rsi)
 
 exit:

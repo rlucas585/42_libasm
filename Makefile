@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 10:00:23 by rlucas        #+#    #+#                  #
-#    Updated: 2020/03/11 18:36:05 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/12 12:54:36 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,7 @@ bonus:
 bonustest:
 	@$(MAKE) WITH_BONUS=1 test
 
-#--------------------------Compile test executable------------------------------
+#--------------------------Compile test executable (criterion)------------------
 
 test: $(OBJ) $(NAME)
 ifeq ($(OS),Linux)

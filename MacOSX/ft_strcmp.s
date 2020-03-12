@@ -6,7 +6,7 @@
 #    By: rlucas <ryanl585codam@gmail.com>             +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/22 00:56:40 by rlucas        #+#    #+#                  #
-#    Updated: 2020/03/11 16:04:54 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/12 12:29:22 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,19 +23,19 @@ _ft_strcmp:
 			push		rbp
 			mov			rbp, rsp
 
-.loop:
+loop:
 			xor			al, al
 			mov			al, byte [rdi]
 			sub			al, byte [rsi]
 			cmp			[rdi], byte 0
-			je			.diff
+			je			diff
 			cmp			al, 0
-			jne			.diff
+			jne			diff
 			inc			rsi
 			inc			rdi
-			jmp			.loop
+			jmp			loop
 
-.diff:		
+diff:		
 			movsx		rax, byte al
 			mov			rsp, rbp
 			pop			rbp

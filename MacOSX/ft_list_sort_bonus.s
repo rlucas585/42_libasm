@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/28 11:07:49 by rlucas        #+#    #+#                  #
-#    Updated: 2020/03/11 15:37:25 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/12 12:28:13 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,12 @@
 ; rsi = (*cmp)()
 
 				global		_ft_list_sort
+				
+				section		.data
+%define			CMPFUNC		[rbp - 32]
+%define			HEAD		[rbp - 40]
 
+				section		.text
 _ft_list_sort:
 				push		rbp
 				mov			rbp, rsp
@@ -30,16 +35,17 @@ _ft_list_sort:
 				test		rdi, rdi		; (rdi == NULL)
 				jz			exit
 
-				push		r15				; r15: Check if swaps
+				push		r15				; r15: Check if a swap occurs
 				push		r12				; r12: Current element
 				push		r13				; r13: Next element
-				sub			rsp, 8			; Stack alignment
 
-				sub			rsp, 16			; (*cmp)() on stack.
+				sub			rsp, 8			; (*cmp)() on stack.
 				mov			[rsp], rsi
 
-				sub			rsp, 16			; **begin_list
+				sub			rsp, 8			; **begin_list
 				mov			[rsp], rdi
+
+				sub			rsp, 8			; For offset of 8, for func calls
 
 				mov			r15, 1			; r15 = 1
 				xor			r14, r14		; r14 = NULL
@@ -49,7 +55,7 @@ reset:
 				je			sort_done
 
 				xor			r15, r15		; r15 = 0
-				mov			rcx, [rsp]
+				mov			rcx, HEAD
 				mov			r12, [rcx]
 				jmp			loop
 
@@ -63,7 +69,7 @@ loop:
 				jz			reset
 				mov			rdi, [r12]		; rdi = current->data
 				mov			rsi, [r13]		; rsi = next->data
-				call		[rsp + 16]				; rax = cmp(rdi, rsi)
+				call		CMPFUNC			; rax = cmp(rdi, rsi)
 				cmp			eax, 0			; if 'rax', does not work correctly
 				jle			next_elem
 											
@@ -76,8 +82,8 @@ loop:
 
 
 sort_done:
-				add			rsp, 32
-				pop			r13				; Restore preserved registers
+				add			rsp, 24
+				pop			r13				; Restore non-volatile registers
 				pop			r12
 				pop			r15
 

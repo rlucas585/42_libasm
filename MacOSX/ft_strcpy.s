@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/20 17:05:34 by rlucas        #+#    #+#                  #
-#    Updated: 2020/03/05 23:56:05 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/12 12:36:03 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,23 +22,20 @@
 _ft_strcpy	push		rbp
 			mov			rbp, rsp
 
-			sub			rsp, 16
-			mov			[rsp], rdi		; Allocating original pointer on stack
-			xor			rax, rax
+			xor			rcx, rcx
 
 loop:
-			cmp			[rsi], byte 0
+			cmp			[rsi + rcx], byte 0
 			je			end
-			mov			al, byte [rsi]
-			mov			[rdi], al
-			inc			rsi
-			inc			rdi
+			mov			al, byte [rsi + rcx]
+			mov			BYTE [rdi + rcx], al
+			inc			rcx
 			jmp			loop
 
 end:		
 			mov			rax, 0			; Null terminator
-			mov			[rdi], al
-			mov			rax, [rsp]
+			mov			[rdi + rcx], al
+			mov			rax, rdi		; Return value = pointer to dst
 			mov			rsp, rbp
 			pop			rbp
 			ret

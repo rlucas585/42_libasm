@@ -6,7 +6,7 @@
 #    By: rlucas <marvin@codam.nl>                     +#+                      #
 #                                                    +#+                       #
 #    Created: 2020/02/26 15:59:17 by rlucas        #+#    #+#                  #
-#    Updated: 2020/02/28 17:08:38 by rlucas        ########   odam.nl          #
+#    Updated: 2020/03/12 11:37:07 by rlucas        ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,25 +30,24 @@ _ft_list_push_front:
 				test		rdi, rdi
 				jz			err
 
-				sub			rsp, 16
+				sub			rsp, 8
 				mov			[rsp], rdi	; Storing **begin_list in stack
-				sub			rsp, 16
+				sub			rsp, 8
 				mov			[rsp], rsi	; Storing *data in stack
 
-				mov			rdi, 16
+				mov			rdi, 16		; bytes to allocate
 				call		_malloc		
 				test		rax, rax	; check 'rax' == NULL
 				jz			err			; Allocation failure
 										
 				mov			rcx, [rsp]	; places *data in 'rcx'
 				mov			[rax], rcx	; new->data = data
-				mov			rdx, [rsp + 16]
+				mov			rdx, [rsp + 8]
 				mov			rcx, [rdx]
 				mov			[rax + 8], rcx	; new->next = head (or NULL)
 										
-
 assign_head:
-				mov			rcx, [rsp + 16]		; place **begin_list in rcx
+				mov			rcx, [rsp + 8]		; place **begin_list in rcx
 				mov			[rcx], rax			; *begin_list = new
 
 err:
